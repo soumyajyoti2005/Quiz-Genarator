@@ -382,7 +382,13 @@ if st.session_state.q_bank is None:
         q_dict = {}
         q_dict["Question"] = q_list[1]
         q_dict["Options"] = q_list[2:6]
-        q_dict["answer"] = int(q_list[6])
+
+        # Robust answer parsing
+        raw_answer = q_list[6].strip()
+        # Extract just the first digit found
+        import re
+        match = re.search(r'[0-3]', raw_answer)
+        q_dict["answer"] = int(match.group()) if match else 0
         q_bank.append(q_dict)
 
     print(q_bank)
